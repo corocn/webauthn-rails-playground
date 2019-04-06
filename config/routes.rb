@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :attestation, only: [] do
-    collection do
-      post :options
-      post :result
-    end
+  resource :attestation, only: [], module: 'attestation' do
+    resource :options, only: [:create]
+    resource :result, only: [:create]
   end
 
-  resources :assertion, only: [] do
-    collection do
-      post :options
-      post :result
-    end
+  resource :assertion, only: [], module: 'assertion' do
+    resource :options, only: [:create]
+    resource :result, only: [:create]
   end
 end
