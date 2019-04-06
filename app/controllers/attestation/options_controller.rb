@@ -22,7 +22,7 @@ module Attestation
 
       render json: credential_options.merge(status: 'ok', errorMessage: '')
     rescue StandardError => e
-      render json: {status: 'failed', errorMessage: e.message}, status: :unprocessable_entity
+      render json: { status: 'failed', errorMessage: e.message }, status: :unprocessable_entity
     end
 
     private

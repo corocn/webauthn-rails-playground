@@ -2,10 +2,12 @@
 
 require 'open3'
 
+Rake.application.instance_variable_get('@tasks').delete('db:migrate')
+
 namespace :db do
   def apply(options)
     config_file = Rails.root.join('config', 'database.yml')
-    schema_file = Rails.root.join('db', 'Schemafile')
+    schema_file = Rails.root.join('db', 'schemas', 'Schemafile')
 
     command = "bundle exec ridgepole -c #{config_file} -f #{schema_file} #{options} -E #{Rails.env}"
     puts command
@@ -29,6 +31,8 @@ namespace :db do
     apply('--apply') do |line|
       puts line
     end
+
+    Rake::Task['db:schema:dump'].invoke if ENV['RAILS_ENV'] == 'development'
   end
 
   desc 'apply dry run'

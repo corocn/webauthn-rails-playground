@@ -4,11 +4,11 @@ module Assertion
   class OptionsController < ApplicationController
     def create
       user = User.find_by!(username: params[:username])
-      raise StandardError if !user.registered
+      raise StandardError unless user.registered
 
       credential_options = build_credential_options
       credential_options[:allowCredentials] = user.credentials.map do |credential|
-        {id: credential.cred_id, type: 'public-key'}
+        { id: credential.cred_id, type: 'public-key' }
       end
 
       payload = {
@@ -22,7 +22,7 @@ module Assertion
 
       render json: credential_options.merge(status: 'ok', errorMessage: '')
     rescue StandardError => e
-      render json: {status: 'failed', errorMessage: e.message}, status: :unprocessable_entity
+      render json: { status: 'failed', errorMessage: e.message }, status: :unprocessable_entity
     end
 
     private
